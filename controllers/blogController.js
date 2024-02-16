@@ -3,6 +3,7 @@ const Blog = require('../models/blogModel');
 
 const createBlog = async (req, res) => {
     try {
+      req.body.user = req.user.userId
       const blog = await Blog.create(req.body);
       res.status(201).json({ blog })
     } catch (error) {

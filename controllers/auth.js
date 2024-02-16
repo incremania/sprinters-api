@@ -4,8 +4,14 @@ const { sendCookies } = require('../utils/token');
 const register = async(req, res) => {
     try {
         const { email , password } = req.body
+        
         if(!email || !password) {
             return res.status(400).json({ error: 'please enter email or password'})
+        }
+
+        const existingEmail = await User.findOne({ email });
+        if(existingEmail) {
+            return res.status(400).json({error: 'email already exist'})
         }
         const user = await User.create({ email, password});
         sendCookies(res, user)
